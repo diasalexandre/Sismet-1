@@ -1,0 +1,72 @@
+<?php
+//We've included ../Includes/FusionCharts_Gen.php, which contains FusionCharts PHP Class
+//to help us easily embed the charts.
+include("PHPClass/Includes/FusionCharts_Gen.php");
+include('../../define.php');
+
+//Trazer o maior número de leitura do banco de dados
+$maxBanco  = mysql_query("SELECT * FROM informacao_meteorologica",$conexao);
+
+while ($row[] = mysql_fetch_array($maxBanco, MYSQL_NUM)) {
+	$cont = $cont+1;
+}
+$cont--;
+
+for ($i=$cont;$i>=($cont-7);$i--)
+	{
+
+		$dadosdata[] = $row[$i][25];
+		$dadostemp[] = $row[$i][2];
+		$datahora[] = explode(" ",$row[$i][25]);
+
+	}
+
+?>
+<HTML>
+<HEAD>
+  <TITLE>
+    FusionCharts Free - Simple Column 3D Chart 
+  </TITLE>
+
+  <SCRIPT LANGUAGE="Javascript" SRC="FusionCharts/FusionCharts.js"></SCRIPT>
+</HEAD>
+
+<BODY>
+
+  <?php
+  //This page demonstrates the ease of generating charts using FusionCharts PHP Class.
+  //For this chart, we've created an instance of FusionCharts PHP Class,
+  //fed chart data and configuration parameters to it and rendered chart using the instance.
+
+  //Here, we've kept this example very simple.
+
+
+  $FC = new FusionCharts("Line","1003","300");
+
+  # Setting Relative Path of chart swf file.
+  $FC->setSwfPath("FusionCharts/");
+
+  # Store chart attributes in a variable
+  $strParam="caption=Gráfico de Temperaturas;xAxisName=Horários;yAxisName=Temperatura;decimalPrecision=2; formatNumberScale=0";
+
+  # Set chart attributes
+  $FC->setChartParams($strParam);
+
+  # Add chart data along with category names 
+  $FC->addChartData($dadostemp[7],"name=".$datahora[7][1]."");
+  $FC->addChartData($dadostemp[6],"name=".$datahora[6][1]."");
+  $FC->addChartData($dadostemp[5],"name=".$datahora[5][1]."");
+  $FC->addChartData($dadostemp[4],"name=".$datahora[4][1]."");
+  $FC->addChartData($dadostemp[3],"name=".$datahora[3][1]."");
+  $FC->addChartData($dadostemp[2],"name=".$datahora[2][1]."");
+  $FC->addChartData($dadostemp[1],"name=".$datahora[1][1]."");
+  $FC->addChartData($dadostemp[0],"name=".$datahora[0][1]."");
+
+
+  # Render chart 
+  $FC->renderChart();
+echo "<pre>"; print_r($FC); exit;
+  ?>
+
+</BODY>
+</HTML>
